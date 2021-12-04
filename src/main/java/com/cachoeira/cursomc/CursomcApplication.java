@@ -13,6 +13,7 @@ import com.cachoeira.cursomc.domain.Cidade;
 import com.cachoeira.cursomc.domain.Cliente;
 import com.cachoeira.cursomc.domain.Endereco;
 import com.cachoeira.cursomc.domain.Estado;
+import com.cachoeira.cursomc.domain.ItemPedido;
 import com.cachoeira.cursomc.domain.Pagamento;
 import com.cachoeira.cursomc.domain.PagamentoComBoleto;
 import com.cachoeira.cursomc.domain.PagamentoComCartao;
@@ -25,6 +26,7 @@ import com.cachoeira.cursomc.repositories.CidadeRepository;
 import com.cachoeira.cursomc.repositories.ClienteRepository;
 import com.cachoeira.cursomc.repositories.EnderecoRepository;
 import com.cachoeira.cursomc.repositories.EstadoRepository;
+import com.cachoeira.cursomc.repositories.ItemPedidoRepository;
 import com.cachoeira.cursomc.repositories.PagamentoRepository;
 import com.cachoeira.cursomc.repositories.PedidoRepository;
 import com.cachoeira.cursomc.repositories.ProdutoRepository;
@@ -48,6 +50,8 @@ public class CursomcApplication implements CommandLineRunner {
 	private PedidoRepository pedidoRepository;
 	@Autowired
 	private PagamentoRepository pagamentoRepository;
+	@Autowired
+	private ItemPedidoRepository itemPedidoRepository;
 	
 	public static void main(String[] args) {
 		SpringApplication.run(CursomcApplication.class, args);
@@ -114,8 +118,19 @@ public class CursomcApplication implements CommandLineRunner {
 	  	
 	  	pagamentoRepository.saveAll(Arrays.asList(pagto1, pagto2));
 	  	
+	  	ItemPedido ip1 = new ItemPedido(ped1, p1, 0.0, 1, 2000.0);
+	  	ItemPedido ip2 = new ItemPedido(ped1, p3, 0.0, 2, 80.0);
+	  	ItemPedido ip3 = new ItemPedido(ped2, p2, 100.0, 1, 800.0);
 	  	
-				
+	  	ped1.getItens().addAll(Arrays.asList(ip1, ip2));
+	  	ped2.getItens().addAll(Arrays.asList(ip3));
+	  	
+	  	p1.getItens().addAll(Arrays.asList(ip1));
+	  	p2.getItens().addAll(Arrays.asList(ip3));
+	  	p3.getItens().addAll(Arrays.asList(ip2));
+	  	
+	  	itemPedidoRepository.saveAll(Arrays.asList(ip1, ip2, ip3));
+		
 	}
 
 }
